@@ -272,7 +272,7 @@ SDK này được cấp phép theo MIT License. Xem [LICENSE](LICENSE) để bi�
 ## Hỗ trợ
 
 -   Email: <info@sepay.vn>
--   Tài liệu: <https://docs.sepay.vn>
+-   Tài liệu: <https://developer.sepay.vn>
 -   Issues: <https://github.com/sepayvn/sepay-pg-php/issues>
 
 ## Lịch sử thay đổi
