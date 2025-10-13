@@ -78,7 +78,7 @@ class SePayClient
             $this->merchantId,
             $this->secretKey,
             $this->config,
-            $this->logger
+            $this->logger,
         );
     }
 
