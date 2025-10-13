@@ -13,7 +13,7 @@ Official PHP SDK for SePay Payment Gateway. Easy integration for payments, bank 
 Install via Composer:
 
 ```bash
-composer require sepay/sepay-pg
+composer require sepay/sepay-pg:dev-main
 ```
 
 ## Requirements

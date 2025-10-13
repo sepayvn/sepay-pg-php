@@ -63,7 +63,7 @@ class SePayClient
         string $merchantId,
         string $secretKey,
         string $environment = self::ENVIRONMENT_SANDBOX,
-        array $config = [],
+        array $config = []
     ) {
         $this->validateEnvironment($environment);
 
@@ -78,7 +78,7 @@ class SePayClient
             $this->merchantId,
             $this->secretKey,
             $this->config,
-            $this->logger,
+            $this->logger
         );
     }
 

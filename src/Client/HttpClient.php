@@ -46,7 +46,7 @@ class HttpClient
         string $merchantId,
         string $secretKey,
         array $config = [],
-        ?LoggerInterface $logger = null,
+        ?LoggerInterface $logger = null
     ) {
         $this->baseUrl = rtrim($baseUrl, '/');
         $this->merchantId = $merchantId;

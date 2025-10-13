@@ -9,6 +9,7 @@ return (new Config())
     ->setRules([
         '@PER-CS' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'trailing_comma_in_multiline' => false,
     ])
     ->setFinder(
         Finder::create()->in([__DIR__ . '/src', __DIR__ . '/tests'])
