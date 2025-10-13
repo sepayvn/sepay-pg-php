@@ -9,7 +9,6 @@
 /.php-cs-fixer.php        export-ignore
 /CHANGELOG.md             export-ignore
 /phpunit.xml              export-ignore
-/composer.lock            export-ignore
 /.github                  export-ignore
 /examples/                export-ignore
 /tests/                   export-ignore
