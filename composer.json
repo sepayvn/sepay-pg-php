@@ -1,0 +1,62 @@
+{
+    "name": "sepay/sepay-pg",
+    "description": "Official PHP SDK for SePay Payment Gateway — simple integration for payments, bank transfers, VietQR.",
+    "type": "library",
+    "keywords": [
+        "sepay",
+        "payment",
+        "gateway",
+        "vietnam",
+        "vietqr",
+        "bank-transfer"
+    ],
+    "homepage": "https://sepay.vn",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^7.10",
+        "psr/log": "^1.1|^2.0|^3.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.87",
+        "mockery/mockery": "^1.6",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^9.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "SePay\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SePay\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "SePay Team",
+            "email": "info@sepay.vn",
+            "role": "Developer"
+        },
+        {
+            "name": "Ngô Quốc Đạt",
+            "email": "quocdat@sepay.vn",
+            "role": "Developer"
+        }
+    ],
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html coverage",
+        "phpstan": "phpstan analyse",
+        "cs-check": "php-cs-fixer check",
+        "cs-fix": "php-cs-fixer fix"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
