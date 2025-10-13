@@ -29,8 +29,8 @@ try {
     $orders = $sepay->orders()->list([
         'order_status' => 'CAPTURED',  // Only successful payments
         'per_page' => 10,
-        'start_created_at' => '2024-01-01',
-        'end_created_at' => date('Y-m-d')
+        'from_created_at' => '2024-01-01',
+        'to_created_at' => date('Y-m-d')
     ]);
 
     echo "Found " . count($orders['data']) . " orders:\n";
@@ -84,8 +84,8 @@ try {
 
     // Orders from specific date range
     $recentOrders = $sepay->orders()->list([
-        'start_created_at' => date('Y-m-d', strtotime('-7 days')),
-        'end_created_at' => date('Y-m-d'),
+        'from_created_at' => date('Y-m-d', strtotime('-7 days')),
+        'to_created_at' => date('Y-m-d'),
         'per_page' => 20
     ]);
     echo "Orders from last 7 days: " . count($recentOrders['data']) . " found\n";

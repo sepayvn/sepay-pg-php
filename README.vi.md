@@ -10,11 +10,15 @@ SDK PHP chính thức cho Cổng thanh toán SePay. Tích hợp dễ dàng thanh
 
 ## Cài đặt
 
-Cài đặt SDK trực tiếp từ GitHub bằng Composer:
+Để cài đặt SDK trực tiếp từ GitHub sử dụng Composer, chạy:
 
 ```bash
 composer config repositories.sepay vcs https://github.com/sepayvn/sepay-pg-php
+```
 
+Sau đó chạy:
+
+```
 composer require sepay/sepay-pg --prefer-source
 ```
 
@@ -52,7 +56,10 @@ $checkoutData = CheckoutBuilder::make()
     ->successUrl('https://yoursite.com/success')
     ->build();
 
-// Tạo các trường form với chữ ký
+// Hiển thị form checkout để thanh toán
+echo $sepay->checkout()->generateFormHtml($checkoutData);
+
+// Hoặc tự tạo các trường form với chữ ký
 $formFields = $sepay->checkout()->generateFormFields($checkoutData);
 
 echo "Form checkout đã được tạo với chữ ký: " . $formFields['signature'];
@@ -90,34 +97,9 @@ $sepay = new SePayClient(
 $sepay->enableDebugMode();
 
 // Cấu hình hành vi thử lại
-$sepay->setRetryAttempts(3)
-      ->setRetryDelay(1000); // mili giây
-```
-
-### Builder Pattern
-
-Bạn có thể dùng CheckoutBuilder để code sạch hơn, hoặc truyền array trực tiếp.
-
-```php
-// Sử dụng CheckoutBuilder (khuyến nghị)
-$checkoutData = CheckoutBuilder::make()
-    ->currency('VND')
-    ->orderAmount(100000)
-    ->operation('PURCHASE')
-    ->orderDescription('Thanh toán thử nghiệm')
-    ->build();
-
-// Sử dụng array trực tiếp (tốt cho dữ liệu động)
-$checkoutArray = [
-    'currency' => 'VND',
-    'order_amount' => 100000,
-    'operation' => 'PURCHASE',
-    'order_description' => 'Thanh toán thử nghiệm',
-];
-
-// Cả hai đều hoạt động với generateFormFields
-$formFields = $sepay->checkout()->generateFormFields($checkoutData);
-$formFields = $sepay->checkout()->generateFormFields($checkoutArray);
+$sepay
+    ->setRetryAttempts(3)
+    ->setRetryDelay(1000); // mili giây
 ```
 
 ## Tài nguyên API
@@ -159,102 +141,44 @@ $checkoutArray = [
 $formFields = $sepay->checkout()->generateFormFields($checkoutArray);
 ```
 
-#### Hai Cách Sử dụng generateFormFields
-
-**Cách 1: Sử dụng CheckoutBuilder**
-
--   Type-safe và API sạch
--   Tự động validate
--   Hỗ trợ IDE tốt
--   Dễ đọc
-
-**Cách 2: Sử dụng Array**
-
--   Linh hoạt hơn
--   Tốt cho dữ liệu động
--   Dễ tích hợp với code hiện có
--   Cùng validation và bảo mật
-
-```php
-// Lấy URL endpoint checkout
-$checkoutUrl = $sepay->checkout()->getCheckoutUrl('sandbox'); // hoặc 'production'
-
-// Tạo form HTML hoàn chỉnh
-$htmlForm = $sepay->checkout()->generateFormHtml($checkoutData, 'sandbox', [
-    'id' => 'payment-form',
-    'class' => 'checkout-form',
-]);
-
-```
-
 #### Phương thức thanh toán
 
 ```php
-// Thanh toán bằng thẻ sử dụng CheckoutBuilder
-$cardCheckout = CheckoutBuilder::make()
+// Thanh toán bằng thẻ
+CheckoutBuilder::make()
     ->paymentMethod('CARD')
-    ->currency('VND')
-    ->orderAmount(250000)
-    ->operation('PURCHASE')
-    ->orderDescription('Thanh toán bằng thẻ')
-    ->orderInvoiceNumber('CARD_001')
-    ->successUrl('https://yoursite.com/success')
+    // ...
     ->build();
 
-// Thanh toán chuyển khoản ngân hàng sử dụng CheckoutBuilder
+// Thanh toán chuyển khoản ngân hàng
 $bankCheckout = CheckoutBuilder::make()
     ->paymentMethod('BANK_TRANSFER')
-    ->currency('VND')
-    ->orderAmount(150000)
-    ->operation('PURCHASE')
-    ->orderDescription('Thanh toán chuyển khoản ngân hàng')
-    ->orderInvoiceNumber('BANK_001')
-    ->successUrl('https://yoursite.com/success')
+    // ...
     ->build();
 
-// Cách khác: Sử dụng array trực tiếp
-$cardArray = [
-    'payment_method' => 'CARD',
-    'currency' => 'VND',
-    'order_amount' => 250000,
-    'operation' => 'PURCHASE',
-    'order_description' => 'Thanh toán bằng thẻ',
-    'order_invoice_number' => 'CARD_001',
-    'success_url' => 'https://yoursite.com/success',
-];
-
-$bankArray = [
-    'payment_method' => 'BANK_TRANSFER',
-    'currency' => 'VND',
-    'order_amount' => 150000,
-    'operation' => 'PURCHASE',
-    'order_description' => 'Thanh toán chuyển khoản ngân hàng',
-    'order_invoice_number' => 'BANK_001',
-    'branch_code' => '001',
-    'success_url' => 'https://yoursite.com/success',
-];
-
-// Cả hai cách đều hoạt động giống nhau
-$cardFields = $sepay->checkout()->generateFormFields($cardArray);
-$bankFields = $sepay->checkout()->generateFormFields($bankArray);
+// Hiển thị tất cả phương thức thanh toán
+$allMethodsCheckout = CheckoutBuilder::make()
+    // ->paymentMethod('...')
+    // ...
+    ->build();
 ```
 
 ### Đơn hàng
 
 ```php
 // Lấy đơn hàng theo số hóa đơn
-$order = $sepay->orders()->retrieve('order_invoice_number');
+$order = $sepay->orders()->retrieve('ORDER_INVOICE_NUMBER');
 
 // Liệt kê đơn hàng với bộ lọc
 $orders = $sepay->orders()->list([
     'per_page' => 10,
     'order_status' => 'CAPTURED',
-    'start_created_at' => '2024-01-01',
-    'end_created_at' => '2024-12-31',
+    'from_created_at' => '2024-01-01',
+    'to_created_at' => '2024-12-31',
 ]);
 
 // Hủy giao dịch (hủy thanh toán)
-$result = $sepay->orders()->voidTransaction('order_invoice_number');
+$result = $sepay->orders()->voidTransaction('ORDER_INVOICE_NUMBER');
 ```
 
 Lưu ý: Đơn hàng được tạo khi khách hàng hoàn thành checkout, không trực tiếp qua API.
@@ -271,7 +195,7 @@ use SePay\Exceptions\RateLimitException;
 use SePay\Exceptions\ServerException;
 
 try {
-    $order = $sepay->orders()->retrieve('order_invoice_number');
+    $order = $sepay->orders()->retrieve('ORDER_INVOICE_NUMBER');
 } catch (AuthenticationException $e) {
     // Thông tin đăng nhập hoặc chữ ký không hợp lệ
     echo "Xác thực thất bại: " . $e->getMessage();
@@ -298,20 +222,10 @@ try {
 
 ## Cấu hình
 
-### Biến Môi trường
-
 ```php
-// Bạn có thể sử dụng biến môi trường để cấu hình
-$sepay = new SePayClient(
-    $_ENV['SEPAY_MERCHANT_ID'],
-    $_ENV['SEPAY_SECRET_KEY'],
-    $_ENV['SEPAY_ENVIRONMENT'] ?? SePayClient::ENVIRONMENT_SANDBOX
-);
-```
+$merchantId = 'SP-LIVE-XXXXXXX';
+$secretKey = 'spsk_live_xxxxxxxxxxxo99PoE7RsBpss3EFH5nV';
 
-### Cấu hình Tùy chỉnh
-
-```php
 $config = [
     'timeout' => 60,           // Thời gian chờ yêu cầu tính bằng giây
     'retry_attempts' => 5,     // Số lần thử lại

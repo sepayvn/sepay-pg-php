@@ -37,7 +37,16 @@ class OrderResource extends BaseResource
     /**
      * List orders with optional filters
      *
-     * @param array<string, mixed> $filters
+     * @param array{
+     *     per_page?: int,
+     *     q?: string,
+     *     customer_id?: string,
+     *     order_status?: string,
+     *     created_at?: string,
+     *     from_created_at?: string,
+     *     to_created_at?: string,
+     *     sort?: array{created_at?: string}
+     * } $filters
      * @return array<string, mixed>
      */
     public function list(array $filters = []): array
@@ -45,10 +54,11 @@ class OrderResource extends BaseResource
         $allowedFilters = [
             'per_page',
             'q',
+            'customer_id',
             'order_status',
             'created_at',
-            'start_created_at',
-            'end_created_at',
+            'from_created_at',
+            'to_created_at',
             'sort',
         ];
 

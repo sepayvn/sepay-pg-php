@@ -6,7 +6,6 @@ namespace SePay;
 
 use SePay\Client\HttpClient;
 use SePay\Resources\OrderResource;
-use SePay\Resources\AgreementResource;
 use SePay\Resources\CheckoutResource;
 use SePay\Auth\SignatureGenerator;
 use SePay\Config\UrlConfig;

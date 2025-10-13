@@ -10,11 +10,15 @@ Official PHP SDK for SePay Payment Gateway. Easy integration for payments, bank 
 
 ## Installation
 
-Install the SDK directly from GitHub using Composer:
+To install the SDK directly from GitHub using Composer, run:
 
 ```bash
 composer config repositories.sepay vcs https://github.com/sepayvn/sepay-pg-php
+```
 
+Then run:
+
+```
 composer require sepay/sepay-pg --prefer-source
 ```
 
@@ -52,7 +56,10 @@ $checkoutData = CheckoutBuilder::make()
     ->successUrl('https://yoursite.com/success')
     ->build();
 
-// Generate form fields with signature
+// Display checkout form for payment
+echo $sepay->checkout()->generateFormHtml($checkoutData);
+
+// Or manually create form fields with signature
 $formFields = $sepay->checkout()->generateFormFields($checkoutData);
 
 echo "Checkout form created with signature: " . $formFields['signature'];
@@ -90,34 +97,9 @@ $sepay = new SePayClient(
 $sepay->enableDebugMode();
 
 // Configure retry behavior
-$sepay->setRetryAttempts(3)
-      ->setRetryDelay(1000); // milliseconds
-```
-
-### Builder Pattern
-
-You can use the CheckoutBuilder for a clean API, or just pass arrays directly.
-
-```php
-// Using CheckoutBuilder (recommended)
-$checkoutData = CheckoutBuilder::make()
-    ->currency('VND')
-    ->orderAmount(100000)
-    ->operation('PURCHASE')
-    ->orderDescription('Test payment')
-    ->build();
-
-// Using array directly (good for dynamic data)
-$checkoutArray = [
-    'currency' => 'VND',
-    'order_amount' => 100000,
-    'operation' => 'PURCHASE',
-    'order_description' => 'Test payment',
-];
-
-// Both work with generateFormFields
-$formFields = $sepay->checkout()->generateFormFields($checkoutData);
-$formFields = $sepay->checkout()->generateFormFields($checkoutArray);
+$sepay
+    ->setRetryAttempts(3)
+    ->setRetryDelay(1000); // milliseconds
 ```
 
 ## API Resources
@@ -159,101 +141,44 @@ $checkoutArray = [
 $formFields = $sepay->checkout()->generateFormFields($checkoutArray);
 ```
 
-#### Two Ways to Use generateFormFields
-
-**Method 1: Using CheckoutBuilder**
-
--   Type-safe and clean API
--   Built-in validation
--   Good IDE support
--   Easy to read
-
-**Method 2: Using Arrays**
-
--   More flexible
--   Good for dynamic data
--   Easy to integrate with existing code
--   Same validation and security
-
-```php
-// Get checkout endpoint URL
-$checkoutUrl = $sepay->checkout()->getCheckoutUrl('sandbox'); // or 'production'
-
-// Generate complete HTML form
-$htmlForm = $sepay->checkout()->generateFormHtml($checkoutData, 'sandbox', [
-    'id' => 'payment-form',
-    'class' => 'checkout-form',
-]);
-```
-
 #### Payment Methods
 
 ```php
-// Card payment using CheckoutBuilder
+// Card payment
 $cardCheckout = CheckoutBuilder::make()
     ->paymentMethod('CARD')
-    ->currency('VND')
-    ->orderAmount(250000)
-    ->operation('PURCHASE')
-    ->orderDescription('Card payment')
-    ->orderInvoiceNumber('CARD_001')
-    ->successUrl('https://yoursite.com/success')
+    // ...
     ->build();
 
-// Bank transfer payment using CheckoutBuilder
+// Bank transfer payment
 $bankCheckout = CheckoutBuilder::make()
     ->paymentMethod('BANK_TRANSFER')
-    ->currency('VND')
-    ->orderAmount(150000)
-    ->operation('PURCHASE')
-    ->orderDescription('Bank transfer payment')
-    ->orderInvoiceNumber('BANK_001')
-    ->successUrl('https://yoursite.com/success')
+    // ...
     ->build();
 
-// Alternative: Using arrays directly
-$cardArray = [
-    'payment_method' => 'CARD',
-    'currency' => 'VND',
-    'order_amount' => 250000,
-    'operation' => 'PURCHASE',
-    'order_description' => 'Card payment',
-    'order_invoice_number' => 'CARD_001',
-    'success_url' => 'https://yoursite.com/success',
-];
-
-$bankArray = [
-    'payment_method' => 'BANK_TRANSFER',
-    'currency' => 'VND',
-    'order_amount' => 150000,
-    'operation' => 'PURCHASE',
-    'order_description' => 'Bank transfer payment',
-    'order_invoice_number' => 'BANK_001',
-    'branch_code' => '001',
-    'success_url' => 'https://yoursite.com/success',
-];
-
-// Both methods work the same way
-$cardFields = $sepay->checkout()->generateFormFields($cardArray);
-$bankFields = $sepay->checkout()->generateFormFields($bankArray);
+// Show all payment methods
+$allMethodsCheckout = CheckoutBuilder::make()
+    // ->paymentMethod('...')
+    // ...
+    ->build();
 ```
 
 ### Orders
 
 ```php
 // Retrieve order by invoice number
-$order = $sepay->orders()->retrieve('order_invoice_number');
+$order = $sepay->orders()->retrieve('ORDER_INVOICE_NUMBER');
 
 // List orders with filters
 $orders = $sepay->orders()->list([
     'per_page' => 10,
     'order_status' => 'CAPTURED',
-    'start_created_at' => '2024-01-01',
-    'end_created_at' => '2024-12-31',
+    'from_created_at' => '2024-01-01',
+    'to_created_at' => '2024-12-31',
 ]);
 
 // Void transaction (cancel payment)
-$result = $sepay->orders()->voidTransaction('order_invoice_number');
+$result = $sepay->orders()->voidTransaction('ORDER_INVOICE_NUMBER');
 ```
 
 Note: Orders are created when customers complete checkout, not directly through the API.
@@ -270,7 +195,7 @@ use SePay\Exceptions\RateLimitException;
 use SePay\Exceptions\ServerException;
 
 try {
-    $order = $sepay->orders()->retrieve('order_invoice_number');
+    $order = $sepay->orders()->retrieve('ORDER_INVOICE_NUMBER');
 } catch (AuthenticationException $e) {
     // Invalid credentials or signature
     echo "Authentication failed: " . $e->getMessage();
@@ -297,20 +222,10 @@ try {
 
 ## Configuration
 
-### Environment Variables
-
 ```php
-// You can use environment variables for configuration
-$sepay = new SePayClient(
-    $_ENV['SEPAY_MERCHANT_ID'],
-    $_ENV['SEPAY_SECRET_KEY'],
-    $_ENV['SEPAY_ENVIRONMENT'] ?? SePayClient::ENVIRONMENT_SANDBOX
-);
-```
+$merchantId = 'SP-LIVE-XXXXXXX';
+$secretKey = 'spsk_live_xxxxxxxxxxxo99PoE7RsBpss3EFH5nV';
 
-### Custom Configuration
-
-```php
 $config = [
     'timeout' => 60,           // Request timeout in seconds
     'retry_attempts' => 5,     // Number of retry attempts
@@ -356,9 +271,9 @@ This SDK is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## Support
 
--   Email: <info@sepay.vn>
--   Documentation: <https://docs.sepay.vn>
--   Issues: <https://github.com/sepayvn/sepay-pg-php/issues>
+-   Email: info@sepay.vn
+-   Documentation: https://developer.sepay.vn
+-   Issues: https://github.com/sepayvn/sepay-pg-php/issues
 
 ## Changelog
 
