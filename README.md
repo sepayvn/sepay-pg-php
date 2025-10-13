@@ -10,18 +10,20 @@ Official PHP SDK for SePay Payment Gateway. Easy integration for payments, bank 
 
 ## Installation
 
-Install via Composer:
+Install the SDK directly from GitHub using Composer:
 
 ```bash
-composer require sepay/sepay-pg:dev-main
+composer config repositories.sepay vcs https://github.com/sepayvn/sepay-pg-php
+
+composer require sepay/sepay-pg --prefer-source
 ```
 
 ## Requirements
 
-- PHP 7.4 or higher
-- ext-json
-- ext-curl
-- Guzzle HTTP client
+-   PHP 7.4 or higher
+-   ext-json
+-   ext-curl
+-   Guzzle HTTP client
 
 ## Quick Start
 
@@ -161,17 +163,17 @@ $formFields = $sepay->checkout()->generateFormFields($checkoutArray);
 
 **Method 1: Using CheckoutBuilder**
 
-- Type-safe and clean API
-- Built-in validation
-- Good IDE support
-- Easy to read
+-   Type-safe and clean API
+-   Built-in validation
+-   Good IDE support
+-   Easy to read
 
 **Method 2: Using Arrays**
 
-- More flexible
-- Good for dynamic data
-- Easy to integrate with existing code
-- Same validation and security
+-   More flexible
+-   Good for dynamic data
+-   Easy to integrate with existing code
+-   Same validation and security
 
 ```php
 // Get checkout endpoint URL
@@ -354,9 +356,9 @@ This SDK is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## Support
 
-- Email: <info@sepay.vn>
-- Documentation: <https://docs.sepay.vn>
-- Issues: <https://github.com/sepayvn/sepay-pg-php/issues>
+-   Email: <info@sepay.vn>
+-   Documentation: <https://docs.sepay.vn>
+-   Issues: <https://github.com/sepayvn/sepay-pg-php/issues>
 
 ## Changelog
 

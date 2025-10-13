@@ -10,10 +10,12 @@ SDK PHP chính thức cho Cổng thanh toán SePay. Tích hợp dễ dàng thanh
 
 ## Cài đặt
 
-Cài đặt qua Composer:
+Cài đặt SDK trực tiếp từ GitHub bằng Composer:
 
 ```bash
-composer require sepay/sepay-pg
+composer config repositories.sepay vcs https://github.com/sepayvn/sepay-pg-php
+
+composer require sepay/sepay-pg --prefer-source
 ```
 
 ## Yêu cầu
@@ -161,17 +163,17 @@ $formFields = $sepay->checkout()->generateFormFields($checkoutArray);
 
 **Cách 1: Sử dụng CheckoutBuilder**
 
-- Type-safe và API sạch
-- Tự động validate
-- Hỗ trợ IDE tốt
-- Dễ đọc
+-   Type-safe và API sạch
+-   Tự động validate
+-   Hỗ trợ IDE tốt
+-   Dễ đọc
 
 **Cách 2: Sử dụng Array**
 
-- Linh hoạt hơn
-- Tốt cho dữ liệu động
-- Dễ tích hợp với code hiện có
-- Cùng validation và bảo mật
+-   Linh hoạt hơn
+-   Tốt cho dữ liệu động
+-   Dễ tích hợp với code hiện có
+-   Cùng validation và bảo mật
 
 ```php
 // Lấy URL endpoint checkout
@@ -355,9 +357,9 @@ SDK này được cấp phép theo MIT License. Xem [LICENSE](LICENSE) để bi�
 
 ## Hỗ trợ
 
-- Email: <info@sepay.vn>
-- Tài liệu: <https://docs.sepay.vn>
-- Issues: <https://github.com/sepayvn/sepay-pg-php/issues>
+-   Email: <info@sepay.vn>
+-   Tài liệu: <https://docs.sepay.vn>
+-   Issues: <https://github.com/sepayvn/sepay-pg-php/issues>
 
 ## Lịch sử thay đổi
 
