@@ -10,16 +10,10 @@ Official PHP SDK for SePay Payment Gateway. Easy integration for payments, bank 
 
 ## Installation
 
-To install the SDK directly from GitHub using Composer, run:
+You can install the SDK by running the following command:
 
 ```bash
-composer config repositories.sepay vcs https://github.com/sepayvn/sepay-pg-php
-```
-
-Then run:
-
-```
-composer require sepay/sepay-pg --prefer-source
+composer require sepay/sepay-pg
 ```
 
 ## Requirements
