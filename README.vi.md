@@ -10,16 +10,10 @@ SDK PHP chính thức cho Cổng thanh toán SePay. Tích hợp dễ dàng thanh
 
 ## Cài đặt
 
-Để cài đặt SDK trực tiếp từ GitHub sử dụng Composer, chạy:
+Bạn có thể cài đặt SDK bằng cách chạy lệnh sau:
 
 ```bash
-composer config repositories.sepay vcs https://github.com/sepayvn/sepay-pg-php
-```
-
-Sau đó chạy:
-
-```
-composer require sepay/sepay-pg --prefer-source
+composer require sepay/sepay-pg
 ```
 
 ## Yêu cầu
