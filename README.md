@@ -3,6 +3,8 @@
 [![Latest Version](https://img.shields.io/packagist/v/sepay/sepay-pg.svg)](https://packagist.org/packages/sepay/sepay-pg)
 [![PHP Version](https://img.shields.io/packagist/php-v/sepay/sepay-pg.svg)](https://packagist.org/packages/sepay/sepay-pg)
 [![License](https://img.shields.io/packagist/l/sepay/sepay-pg.svg)](https://packagist.org/packages/sepay/sepay-pg)
+[![Total Downloads](https://img.shields.io/packagist/dt/sepay/sepay-pg.svg?style=flat-square)](https://packagist.org/packages/sepay/sepay-pg)
+
 
 **Translations:** [English](README.md) | [Tiếng Việt](README.vi.md)
 
